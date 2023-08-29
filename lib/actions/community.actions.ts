@@ -53,7 +53,7 @@ export async function fetchCommunityDetails(id: string) {
   try {
     connectDB();
 
-    const communityDetails = await Community.findOne({ id }).populate([
+    const communityDetails = await Community.findOne({ id: id }).populate([
       "createdBy",
       {
         path: "members",

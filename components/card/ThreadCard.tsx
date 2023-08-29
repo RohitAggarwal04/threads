@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs";
+import { formatDateString } from "@/lib/utils";
 interface Props {
   id: string;
   currentUserId: string;
@@ -8,7 +9,6 @@ interface Props {
   parentId: string | null;
   author: { name: string; image: string; id: string };
   community: { name: string; image: string; id: string };
-
   comments: { author: { image: string } }[];
   createdAt: string;
   iscomment?: boolean;
@@ -19,10 +19,13 @@ const ThreadCard = ({
   content,
   author,
   parentId,
+  community,
   comments,
   createdAt,
   iscomment,
 }: Props) => {
+  console.log(community);
+
   return (
     <article
       className={`flex flex-col w-full  rounded-xl ${
@@ -98,6 +101,23 @@ const ThreadCard = ({
           </div>
         </div>
       </div>
+      {!iscomment && community && (
+        <Link
+          href={`/communities/${community.id}`}
+          className="mt-5 flex items-center "
+        >
+          <p className="text-subtle-medium text-gray-1 ">
+            {formatDateString(createdAt)}- {community.name} Community
+          </p>
+          <Image
+            src={community.image}
+            alt={community.name}
+            width={14}
+            height={14}
+            className="ml-1 rounded-full object-cover "
+          />
+        </Link>
+      )}
     </article>
   );
 };
